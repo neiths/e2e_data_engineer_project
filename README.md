@@ -50,3 +50,5 @@ The project is designed with the following components:
     ```bash
     docker-compose up
     ```
+
+docker exec -it cassandra cqlsh -u cassandra -p cassandra localhost 9042
