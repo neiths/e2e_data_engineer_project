@@ -20,7 +20,7 @@ def get_data():
 def format_data(res):
     data = {}
     location = res['location']
-    data['id'] = uuid.uuid4()
+    data['id'] = str(uuid.uuid4())
     data['first_name'] = res['name']['first']
     data['last_name'] = res['name']['last']
     data['gender'] = res['gender']
@@ -36,3 +36,16 @@ def format_data(res):
 
     return data
 
+def stream_data():
+    import json
+    from kafka import KafkaProducer
+    import time
+
+    data = get_data()
+    data = format_data(data)
+
+    producer = KafkaProducer(bootstrap_servers=['localhost:9092'], max_block_ms=5000)
+
+    producer.send('users_created', json.dumps(data).encode('utf-8'))
+
+stream_data()
